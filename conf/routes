@@ -1,0 +1,33 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET     /                           controllers.Application.index
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.at(path="/public", file)
+GET     /assets/stylesheets/../img/glyphicons-halflings.png            controllers.Assets.at(path="/public", file="/images/glyphicons-halflings.png")
+GET     /assets/stylesheets/../img/glyphicons-halflings-white.png      controllers.Assets.at(path="/public", file="/images/glyphicons-halflings-white.png")
+
+# Authentication
+GET     /login                              controllers.Application.login
+POST    /login                              controllers.Application.authenticate
+GET     /logout                             controllers.Application.logout
+GET		/register					controllers.Application.register
+
+# Friends page
+GET     /friends                 	controllers.FriendsController.list
+GET     /friends/new             	controllers.FriendsController.create
+GET     /friends/:id             	controllers.FriendsController.edit(id: Long)
+POST    /friends/:id                controllers.FriendsController.save(id: Long)
+POST    /friends                    controllers.FriendsController.add()
+GET     /friends/delete/:id      	controllers.FriendsController.delete(id: Long)
+
+# Circles page
+GET     /circles                 	controllers.CirclesController.index
+
+# Maps page
+GET     /map                 		controllers.MapController.index
+
+GET		/gravatar/:email			controllers.GravatarController.imageRef(email: String)
