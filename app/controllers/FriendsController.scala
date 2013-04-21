@@ -9,14 +9,12 @@ import play.api.data.format.Formats
 import play.api.data.format.Formatter
 import play.api.data.validation.Constraints._
 import play.api.i18n.Messages
-
 import org.squeryl.PrimitiveTypeMode._
-
 import views._
 import models._
+import play.api.mvc.Result
 
 object FriendsController extends Controller with Secured {
-
   val Home = Redirect(routes.FriendsController.list())
 
   private val userForm: Form[User] = Form(
@@ -24,7 +22,9 @@ object FriendsController extends Controller with Secured {
       "firstName" -> optional(text),
       "lastName" -> optional(text),
       "email" -> nonEmptyText,
-      "password" -> nonEmptyText)(User.apply)(User.unapply))
+      "password" -> nonEmptyText,
+      "latitude" -> optional(of[Float]),
+      "longitude" -> optional(of[Float]))(User.apply)(User.unapply))
 
   //  def list = Action { implicit request =>
   //    println("Logged in user is "+request.session.get("email"))
@@ -102,4 +102,22 @@ object FriendsController extends Controller with Secured {
     User.delete(id)
     Home.flashing("success" -> "User has been deleted")
   }
+  
+  def checkIn(latitude:Float, longitude:Float) = Action { implicit request =>
+    //get the user from email
+    Logger.info("User location about to be updated to %s".format(latitude))
+    val email = request.session.get("email").map { email =>
+      inTransaction {
+	      AppDB.users.update(n =>
+	              where(n.email === email)
+	                set (
+	                  n.lat := Some(latitude),
+	                  n.lon := Some(longitude)))
+      }
+    	Logger.info("User location has been updated")
+    }.getOrElse("default")
+    //update the lat/long and save
+//    Home.flashing("success" -> "User location has been updated")
+     Ok("success")
+    }
 }

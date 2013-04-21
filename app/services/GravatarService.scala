@@ -1,23 +1,15 @@
-package controllers
+package services
 
 import play.api._
 import play.api.mvc._
 import play.api.data._
 import org.apache.commons.codec.digest.DigestUtils
 
-object GravatarController extends Controller {
+object GravatarService {
 
   val GRAVATAR:String = "http://www.gravatar.com/";
   val GRAVATAR_SSL:String = "https://secure.gravatar.com/";
     
-  def imageRef(email:String) = Action { implicit request =>
-    println("Getting imageref for "+email)
-	    val urlString = url(email)
-	    println("Imagref is "+urlString)
-	  Ok(urlString)
-  }
-  
-  
   def url (email:String): String = {
     val url = new StringBuilder().append(GRAVATAR)
 		 println("Getting md5 url: "+url.toString)

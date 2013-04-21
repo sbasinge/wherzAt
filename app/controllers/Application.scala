@@ -4,6 +4,8 @@ import play.api._
 import play.api.mvc._
 import play.api.data._
 import play.api.data.Forms._
+import play.api.data.format.Formats._
+import play.api.data.format.Formats
 
 import models._
 import views._
@@ -23,7 +25,9 @@ object Application extends Controller with Secured {
       "firstName" -> optional(text),
       "lastName" -> optional(text),
       "email" -> nonEmptyText,
-      "password" -> nonEmptyText)(User.apply)(User.unapply))
+      "password" -> nonEmptyText,
+      "latitude" -> optional(of[Float]),
+      "longitude" -> optional(of[Float]))(User.apply)(User.unapply))
 
   def register = Action { implicit request =>
     val form = if (flash.get("error").isDefined)

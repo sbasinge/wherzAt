@@ -5,7 +5,7 @@ import play.api.Play.current
 import org.squeryl._
 import org.squeryl.PrimitiveTypeMode._
 
-case class User(firstName: Option[String], lastName: Option[String], email: String, password: String) extends BaseEntity {
+case class User(firstName: Option[String], lastName: Option[String], email: String, password: String, lat: Option[Float], lon: Option[Float]) extends BaseEntity {
 
 }
 

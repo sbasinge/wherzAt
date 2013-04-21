@@ -23,6 +23,7 @@ GET     /friends/:id             	controllers.FriendsController.edit(id: Long)
 POST    /friends/:id                controllers.FriendsController.save(id: Long)
 POST    /friends                    controllers.FriendsController.add()
 GET     /friends/delete/:id      	controllers.FriendsController.delete(id: Long)
+POST    /friends/checkin/:lat/:lon            controllers.FriendsController.checkIn(lat:Float, lon:Float)
 
 # Circles page
 GET     /circles                 	controllers.CirclesController.index
@@ -30,4 +31,5 @@ GET     /circles                 	controllers.CirclesController.index
 # Maps page
 GET     /map                 		controllers.MapController.index
 
-GET		/gravatar/:email			controllers.GravatarController.imageRef(email: String)
+GET     /room/chat                  controllers.ChatController.chat()
+GET     /chat                  		controllers.ChatController.chatRoom()
