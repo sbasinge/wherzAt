@@ -5,8 +5,8 @@ import play.api.db.DB
 import play.api.GlobalSettings
 import play.api.Application
 import org.squeryl.adapters.MySQLAdapter
-//import models.AppDB
 import org.squeryl.PrimitiveTypeMode.inTransaction
+import models.AppDB
 
 object Global extends GlobalSettings {
   override def onStart(app: Application) {
@@ -18,7 +18,9 @@ object Global extends GlobalSettings {
       case Some("com.microsoft.sqlserver.jdbc.SQLServerDriver") => Some(() => getSession(new MSSQLServer, app))
       case _ => sys.error("Database driver must be h2, postgres, mysql or sqlserver")
     }
-
+    inTransaction {
+    	AppDB.printDdl
+    }
   }
 
   def getSession(adapter: DatabaseAdapter, app: Application) = Session.create(DB.getConnection()(app), adapter)

@@ -3,9 +3,14 @@ package models
 import play.api.db._
 import play.api.Play.current
 import org.squeryl._
+import org.squeryl.dsl._
 import org.squeryl.PrimitiveTypeMode._
 
-case class User(firstName: Option[String], lastName: Option[String], email: String, password: String, lat: Option[Float], lon: Option[Float], address: Option[String]) extends BaseEntity {
+case class User(firstName: Option[String], lastName: Option[String], email: String, password: String
+		, lat: Option[Float], lon: Option[Float], address: Option[String]) extends BaseEntity {
+  
+	lazy val circles: OneToMany[Circle] = AppDB.ownerToCircles.left(this)
+	lazy val memberships = AppDB.circleSubscriptions.right(this) 
 
 }
 
