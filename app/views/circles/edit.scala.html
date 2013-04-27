@@ -1,0 +1,23 @@
+@(circleForm: Form[Circle], id: Long)(implicit flash: Flash, lang: Lang, request: RequestHeader)
+
+@import helper._
+@import helper.twitterBootstrap._
+
+@main("Update a Circle") {
+    
+    @helper.form(routes.CirclesController.save(id)) {
+        
+        <fieldset>
+            @inputText(circleForm("name"), '_label -> "Name")
+            @inputText(circleForm("ownerId"), '_label -> "Owner ID")
+
+        </fieldset>
+        
+        <div class="actions">
+            <input type="submit" value="Save this circle" class="btn primary"> or 
+            <a href="@routes.CirclesController.list()" class="btn">Cancel</a> 
+        </div>
+        
+    }
+    
+}

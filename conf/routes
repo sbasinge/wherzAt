@@ -27,7 +27,12 @@ POST    /friends/checkin/:lat/:lon            controllers.FriendsController.chec
 POST    /friends/checkin/:lat/:lon/:address            controllers.FriendsController.checkInAddress(lat:Float, lon:Float, address:String)
 
 # Circles page
-GET     /circles                 	controllers.CirclesController.index
+GET     /circles                 	controllers.CirclesController.list
+GET     /circles/new             	controllers.CirclesController.create
+GET     /circles/:id             	controllers.CirclesController.edit(id: Long)
+POST    /circles/:id                controllers.CirclesController.save(id: Long)
+POST    /circles                    controllers.CirclesController.add()
+GET     /circles/delete/:id      	controllers.CirclesController.delete(id: Long)
 
 # Maps page
 GET     /map                 		controllers.MapController.index
