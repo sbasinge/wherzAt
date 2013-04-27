@@ -24,7 +24,8 @@ object FriendsController extends Controller with Secured {
       "email" -> nonEmptyText,
       "password" -> nonEmptyText,
       "latitude" -> optional(of[Float]),
-      "longitude" -> optional(of[Float]))(User.apply)(User.unapply))
+      "longitude" -> optional(of[Float]),
+      "address" -> optional(text))(User.apply)(User.unapply))
 
   //  def list = Action { implicit request =>
   //    println("Logged in user is "+request.session.get("email"))
@@ -120,4 +121,23 @@ object FriendsController extends Controller with Secured {
 //    Home.flashing("success" -> "User location has been updated")
      Ok("success")
     }
+
+  def checkInAddress(latitude:Float, longitude:Float, address:String) = Action { implicit request =>
+    //get the user from email
+    Logger.info("User location about to be updated to %s".format(latitude))
+    val email = request.session.get("email").map { email =>
+      inTransaction {
+	      AppDB.users.update(n =>
+	              where(n.email === email)
+	                set (
+	                  n.lat := Some(latitude),
+	                  n.lon := Some(longitude),
+	                  n.address := Some(address)))
+      }
+    	Logger.info("User location has been updated")
+    }.getOrElse("default")
+    //update the lat/long and save
+//    Home.flashing("success" -> "User location has been updated")
+     Ok("success")
+  }
 }

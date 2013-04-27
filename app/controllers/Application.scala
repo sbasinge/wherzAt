@@ -27,7 +27,8 @@ object Application extends Controller with Secured {
       "email" -> nonEmptyText,
       "password" -> nonEmptyText,
       "latitude" -> optional(of[Float]),
-      "longitude" -> optional(of[Float]))(User.apply)(User.unapply))
+      "longitude" -> optional(of[Float]),
+      "address" -> optional(text))(User.apply)(User.unapply))
 
   def register = Action { implicit request =>
     val form = if (flash.get("error").isDefined)

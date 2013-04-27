@@ -21,16 +21,29 @@ function getLocation()
   }
 function showPosition(position)
   {
-	var x=document.getElementById("demo");
-  x.innerHTML="Current Location: Latitude: " + position.coords.latitude + 
-  "<br>Longitude: " + position.coords.longitude; 
-  $.ajax({
-  	url: '/friends/checkin/'+position.coords.latitude+'/'+position.coords.longitude,
-  	type: 'POST',
-  	global: false
-	});
 	var latlon=position.coords.latitude+","+position.coords.longitude;
-
+	var reverse_url = "http://maps.googleapis.com/maps/api/geocode/json?latlng="+latlon+"&sensor=false"
+	var formatted_address = "Unknown"
+	$.ajax({
+			url: reverse_url,
+			type: 'GET',
+			global: false
+		}
+	).done(function ( data ) {
+  		if( console && console.log ) {
+    		console.log("Sample data:", data.results[0].formatted_address);
+  		}
+		var x=document.getElementById("address");
+		formatted_address = data.results[0].formatted_address
+		x.innerHTML="Address: "+data.results[0].formatted_address; 
+		$.ajax({
+		  	url: '/friends/checkin/'+position.coords.latitude+'/'+position.coords.longitude+"/"+formatted_address,
+		  	type: 'POST',
+		  	global: false
+		});
+	});
+	var x=document.getElementById("demo");
+	x.innerHTML="Current Location: Latitude: " + position.coords.latitude + "<br>Longitude: " + position.coords.longitude; 
 	var img_url="http://maps.googleapis.com/maps/api/staticmap?center="+latlon+"&zoom=14&size=400x300&sensor=false";
 	document.getElementById("mapholder").innerHTML="<img src='"+img_url+"'>";
   }
@@ -99,6 +112,7 @@ function showPosition(position)
 					}
 					<br/>
 					<div id="demo"></div>
+					<div id="address"></div>
 					<span id="mapholder"></span>
 				</div>
 
